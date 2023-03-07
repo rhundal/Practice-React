@@ -1,25 +1,87 @@
-import logo from './logo.svg';
 import './App.css';
+import { createContext, useContext, useState } from 'react';
+
+const ThemeContext = createContext(null);
 
 function App() {
+
+  const [theme, setTheme] = useState('dark');
+
   return (
+
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+      <ThemeContext.Provider value={theme}>
+        <Form setTheme={setTheme} />
+      </ThemeContext.Provider>
+
+
     </div>
   );
 }
+
+function Form({ setTheme }) {
+  return (
+    <Panel title="Welcome" setTheme={setTheme}>
+      <Button>Sign up</Button>
+      <Button>Log in</Button>
+    </Panel>
+  );
+}
+
+function Panel({ title, children, setTheme }) {
+  const theme = useContext(ThemeContext);
+  const className = 'panel-' + theme;
+  return (
+    <section className={className}>
+      <h1>{title}</h1>
+      <Button id="colorBtn" onClick={() => {
+
+        switch (theme) {
+
+          case 'dark':
+
+            setTheme('light');
+            break;
+
+          case 'light':
+            setTheme('red');
+            break;
+
+          case 'red':
+            setTheme('blue');
+            break;
+
+          case 'blue':
+            setTheme('purple');
+            break;
+
+          case 'purple':
+            setTheme('dark');
+            break;
+
+        }
+        // console.log("setTheme");
+      }
+
+      }>Change Color</Button>
+
+      {children}
+    </section>
+  )
+}
+
+function Button({ children, onClick }) {
+  const theme = useContext(ThemeContext);
+  const className = 'button-' + theme;
+  return (
+
+    <button className={className} onClick={onClick}>
+      {children}
+    </button>
+  );
+}
+
+
 
 export default App;
