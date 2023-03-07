@@ -11,8 +11,11 @@ function App() {
 
     <div className="App">
 
-      <ThemeContext.Provider value={theme}>
-        <Form setTheme={setTheme} />
+      <ThemeContext.Provider value={{
+        theme,
+        setTheme
+      }}>
+        <Form />
       </ThemeContext.Provider>
 
 
@@ -20,17 +23,17 @@ function App() {
   );
 }
 
-function Form({ setTheme }) {
+function Form() {
   return (
-    <Panel title="Welcome" setTheme={setTheme}>
+    <Panel title="Welcome">
       <Button>Sign up</Button>
       <Button>Log in</Button>
     </Panel>
   );
 }
 
-function Panel({ title, children, setTheme }) {
-  const theme = useContext(ThemeContext);
+function Panel({ title, children }) {
+  const { theme, setTheme } = useContext(ThemeContext);
   const className = 'panel-' + theme;
   return (
     <section className={className}>
@@ -72,7 +75,7 @@ function Panel({ title, children, setTheme }) {
 }
 
 function Button({ children, onClick }) {
-  const theme = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const className = 'button-' + theme;
   return (
 
